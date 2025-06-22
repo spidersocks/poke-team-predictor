@@ -33,7 +33,7 @@ try:
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found at: {model_path}")
 
-     bundle = load(model_path, mmap_mode='r')
+    bundle = load(model_path, mmap_mode='r')
     model = bundle["model"]
     label_columns = bundle["label_columns"]
 
