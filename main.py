@@ -1,11 +1,12 @@
+# main.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pandas as pd
-import pickle
 import os
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from joblib import load  # Import load from joblib
+import uvicorn  # Import uvicorn
 
 app = FastAPI()
 
@@ -154,3 +155,7 @@ async def predict_teammates_endpoint(req: TeammateRequest):
         return results_list
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
