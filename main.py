@@ -71,6 +71,7 @@ fallbacks: dict[str, str] = {
 def get_sprite_url(poke_name: str) -> str:
     """
     Returns a sprite URL for `poke_name` using PokéAPI.
+    Prefers official-artwork PNG (transparent background).
     Falls back to the transparent 0.png sprite if none found.
     """
     base = poke_name.lower().replace(" ", "-").replace("’", "").replace("'", "")
@@ -84,9 +85,10 @@ def get_sprite_url(poke_name: str) -> str:
             res = requests.get(f"https://pokeapi.co/api/v2/pokemon/{attempt}", timeout=4)
             res.raise_for_status()
             data = res.json()
+            # Prefer official-artwork (transparent), then front_default (classic)
             sprite = (
-                data["sprites"]["front_default"]
-                or data["sprites"]["other"]["official-artwork"]["front_default"]
+                data["sprites"]["other"]["official-artwork"]["front_default"]
+                or data["sprites"]["front_default"]
             )
             if sprite:
                 return sprite
