@@ -33,7 +33,7 @@ try:
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found at: {model_path}")
 
-    bundle = load(model_path)
+     bundle = load(model_path, mmap_mode='r')
     model = bundle["model"]
     label_columns = bundle["label_columns"]
 
@@ -44,7 +44,7 @@ try:
     if not os.path.exists(X_df_path):
         raise FileNotFoundError(f"X_df.csv file not found at: {X_df_path}")
 
-    X_df = pd.read_csv(X_df_path)
+    X_df = pd.read_csv(X_df_path, nrows=0)
 
     print("Model and data loaded successfully.")
 
