@@ -135,8 +135,14 @@ def predict_teammates(core: Tuple[str, str],
 
     teammate_names = [c.replace("teammate_", "") for c in label_columns]
     ranked = sorted(zip(teammate_names, probs),
-                    key=lambda x: x[1],
-                    reverse=True)[:top_n]
+                key=lambda x: x[1],
+                reverse=True)
+
+    # Filter out probability <= 0
+    ranked = [row for row in ranked if row[1] > 0]
+
+    # Only keep up to top_n
+    ranked = ranked[:top_n]
 
     return pd.DataFrame(ranked,
                         columns=["Teammate", "Predicted Probability"])
